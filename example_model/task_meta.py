@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from metadata.variables import TaskGroupType
 from metadata.abstract import ModelTask, ModelExecutor
 
 
@@ -6,28 +7,30 @@ class ExampleTask(ModelTask):
     def __init__(
         self,
         task_name: str,
-        tasks: Dict[str, Any],
+        task_info: Dict[str, Any],
     ):
         super().__init__(
             task_name=task_name,
-            tasks=tasks,
+            task_info=task_info,
         )
 
 
 class ExampleExecutor(ModelExecutor):
     def __init__(
         self,
-        tasks: ExampleTask,
+        task: ExampleTask,
+        params: Dict[str, Any] = {},
     ):
         super().__init__(
-            tasks=tasks,
+            task=task,
+            params=params,
         )
 
     def preprocessing(self):
-        super().execute(process_name="preprocessing")
+        super().execute(process_name=TaskGroupType.preprocessing.value)
 
     def modeling(self):
-        super().execute(process_name="modeling")
+        super().execute(process_name=TaskGroupType.modeling.value)
 
     def prediction(self):
-        super().execute(process_name="prediction")
+        super().execute(process_name=TaskGroupType.prediction.value)
